@@ -15,34 +15,36 @@ import android.widget.ListView;
 
 public class MainActivity extends AppCompatActivity {
     int asdf = 1234;
-    public String[] contacts={"Lee Seungwoo",
-                                "Jung Taeyoung",
-                                "Gimun"};
+    public String[] contacts = {"Lee Seungwoo",
+            "Jung Taeyoung",
+            "Gimun"};
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        //Change in Sphere///////////////////////////
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        TabHost tabHost=(TabHost) findViewById(R.id.tabHost);
+        TabHost tabHost = (TabHost) findViewById(R.id.tabHost);
         tabHost.setup();
 
-        TabSpec spec1= tabHost.newTabSpec("Tab A").setContent(R.id.linearLayout).setIndicator("Tab AA");
+        TabSpec spec1 = tabHost.newTabSpec("Tab A").setContent(R.id.linearLayout).setIndicator("Tab AA");
         ArrayAdapter<String> Adapter;
         Adapter = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, contacts);
-        ListView list = (ListView)findViewById(R.id.listView);
+        ListView list = (ListView) findViewById(R.id.listView);
         list.setAdapter(Adapter);
 //        list.setOnItemClickListener((AdapterView.OnItemClickListener) this);
         tabHost.addTab(spec1);
 
-        TabSpec spec2= tabHost.newTabSpec("Tab B").setContent(R.id.linearLayout2).setIndicator("Tab BB");
+        TabSpec spec2 = tabHost.newTabSpec("Tab B").setContent(R.id.linearLayout2).setIndicator("Tab BB");
         tabHost.addTab(spec2);
 
-        TabSpec spec3= tabHost.newTabSpec("Tab C").setContent(R.id.linearLayout3).setIndicator("Tab CC");
+        TabSpec spec3 = tabHost.newTabSpec("Tab C").setContent(R.id.linearLayout3).setIndicator("Tab CC");
         tabHost.addTab(spec3);
 
-        tabHost.getTabWidget().getChildAt(0).getLayoutParams().height=80;
-        tabHost.getTabWidget().getChildAt(1).getLayoutParams().height=80;
-        tabHost.getTabWidget().getChildAt(2).getLayoutParams().height=80;
+        tabHost.getTabWidget().getChildAt(0).getLayoutParams().height = 80;
+        tabHost.getTabWidget().getChildAt(1).getLayoutParams().height = 80;
+        tabHost.getTabWidget().getChildAt(2).getLayoutParams().height = 80;
     }
 
     //protected void
