@@ -18,6 +18,8 @@ import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.widget.GridView;
 import android.content.Context;
+import android.widget.Toast;
+
 import com.example.q.helloworld.ImageAdapter;
 
 
@@ -45,6 +47,12 @@ public class MainActivity extends AppCompatActivity {
         TabSpec spec2= tabHost.newTabSpec("Tab B").setContent(R.id.linearLayout2).setIndicator("Tab BB");
         GridView gridView = (GridView) findViewById(R.id.gridView);
         gridView.setAdapter(new ImageAdapter(this));
+        gridView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                Toast.makeText(MainActivity.this, ""+position, 100).show();
+            }
+        });
         tabHost.addTab(spec2);
 
         TabSpec spec3= tabHost.newTabSpec("Tab C").setContent(R.id.linearLayout3).setIndicator("Tab CC");

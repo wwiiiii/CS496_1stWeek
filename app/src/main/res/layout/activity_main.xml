@@ -60,6 +60,7 @@
                         android:horizontalSpacing="10dp"
                         android:stretchMode="columnWidth"
                         android:id="@+id/gridView" />
+
                 </LinearLayout>
 
                 <LinearLayout
@@ -80,10 +81,5 @@
 
         </LinearLayout>
     </TabHost>
-
-    <ScrollView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:id="@+id/scrollView" />
 
 </RelativeLayout>
