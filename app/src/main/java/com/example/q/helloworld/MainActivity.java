@@ -17,7 +17,7 @@ public class MainActivity extends AppCompatActivity {
 
     public String[] contacts={"Lee Seungwoo",
                                 "Jung Taeyoung",
-                                "Lee Gimun"};
+                                "Gimun"};
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
