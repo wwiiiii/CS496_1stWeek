@@ -21,7 +21,7 @@ public class MainActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        //Change in Sphere///////////////////////////
+        //Change in Sphere///
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
