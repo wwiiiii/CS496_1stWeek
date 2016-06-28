@@ -59,10 +59,10 @@ public class MainActivity extends AppCompatActivity {
         contactList = jsonStringToList(loadJsonData());
 
         ListAdapter Adapter = new SimpleAdapter(
-                MainActivity.this, contactList,
-                R.layout.list_item, new String[] { TAG_NAME, TAG_EMAIL,
-                TAG_PHONE_MOBILE }, new int[] { R.id.name,
-                R.id.email, R.id.mobile });
+                MainActivity.this, contactList, R.layout.my_item_view,//list_item,
+                new String[]    { TAG_NAME , TAG_EMAIL, TAG_PHONE_MOBILE  },
+                new int[]       { R.id.name, R.id.email, R.id.mobile        }
+        );
 
         ListView list = (ListView)findViewById(R.id.listView);
         list.setAdapter(Adapter);
