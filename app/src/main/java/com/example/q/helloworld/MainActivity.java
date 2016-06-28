@@ -14,7 +14,7 @@ import android.widget.ListView;
 
 
 public class MainActivity extends AppCompatActivity {
-
+    int asdf = 1234;
     public String[] contacts={"Lee Seungwoo",
                                 "Jung Taeyoung",
                                 "Gimun"};
