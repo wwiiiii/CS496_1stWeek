@@ -1,13 +1,23 @@
 package com.example.q.helloworld;
 
+import android.app.Activity;
+import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
+import android.view.View;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.GridLayout;
+import android.widget.GridView;
 import android.widget.ListAdapter;
 import android.widget.ListView;
 import android.widget.SimpleAdapter;
 import android.widget.TabHost;
 import android.widget.TabHost.TabSpec;
+import android.widget.TextView;
+import android.widget.Toast;
 
 
 import org.json.JSONArray;
@@ -23,7 +33,6 @@ import java.io.StringWriter;
 import java.io.Writer;
 
 public class MainActivity extends AppCompatActivity {
-
     private static final String TAG_CONTACTS = "contacts";
     private static final String TAG_ID = "id";
     private static final String TAG_NAME = "name";
@@ -67,6 +76,7 @@ public class MainActivity extends AppCompatActivity {
         ListView list = (ListView)findViewById(R.id.listView);
         list.setAdapter(Adapter);
 
+
         tabHost.addTab(spec1);
 
         TabSpec spec2= tabHost.newTabSpec("Tab B").setContent(R.id.linearLayout2).setIndicator("Tab BB");
@@ -78,7 +88,11 @@ public class MainActivity extends AppCompatActivity {
         tabHost.getTabWidget().getChildAt(0).getLayoutParams().height=80;
         tabHost.getTabWidget().getChildAt(1).getLayoutParams().height=80;
         tabHost.getTabWidget().getChildAt(2).getLayoutParams().height=80;
+
+
     }
+
+
 
     protected String loadJsonData(){
         InputStream is = getResources().openRawResource(R.raw.mydata);
@@ -143,5 +157,15 @@ public class MainActivity extends AppCompatActivity {
         }
         return res;
     }
-    //protected void
+    public void buttonPushed(View view)
+    {
+        /*TextView tv = (TextView)findViewById(R.id.name);
+        String str = tv.toString();
+        Log.w("tag",str);*/
+        GridLayout parent = (GridLayout)view.getParent();
+        TextView mobile = (TextView)parent.getChildAt(2);
+        Toast.makeText(getApplicationContext(), mobile.getText().toString(), Toast.LENGTH_SHORT).show();
+      //  Intent intent = new Intent(Intent.ACTION_DIAL, Uri.parse("01044257107"));
+      //  this.startActivity(intent);
+    }
 }
