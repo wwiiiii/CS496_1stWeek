@@ -10,6 +10,8 @@ import android.os.Bundle;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.BaseAdapter;
@@ -70,6 +72,10 @@ public class MainActivity extends AppCompatActivity {
 
         TabSpec spec2= tabHost.newTabSpec("Tab B").setContent(R.id.linearLayout2).setIndicator("Tab BB");
         viewSwitcher = (ViewSwitcher)findViewById(R.id.viewSwitcher);
+        Animation inAnimation = AnimationUtils.loadAnimation(this, android.R.anim.slide_in_left); inAnimation.setDuration(500);
+           Animation outAnimation = AnimationUtils.loadAnimation(this, android.R.anim.slide_out_right); outAnimation.setDuration(500);
+           viewSwitcher.setOutAnimation(outAnimation);
+           viewSwitcher.setInAnimation(inAnimation);
         {
             GridView gridView = (GridView) findViewById(R.id.gridView);
             gridView.setAdapter(new ImageAdapter(this));
@@ -77,7 +83,7 @@ public class MainActivity extends AppCompatActivity {
                 @Override
                 public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                     Toast.makeText(MainActivity.this, "" + position, Toast.LENGTH_SHORT).show();
-                    pager.setCurrentItem(position);
+                    pager.setCurrentItem(position, true);
                     viewSwitcher.showNext();
                 }
             });
@@ -88,6 +94,17 @@ public class MainActivity extends AppCompatActivity {
             pager = (ViewPager) findViewById(R.id.main_viewPager);
             adapter = new NewAdapter(this.getLayoutInflater(), this);
             pager.setAdapter(adapter);
+            pager.setPageTransformer(false, new ViewPager.PageTransformer() {
+                        @Override
+                        public void transformPage(View page, float position) {
+                      float normalizedposition = Math.abs( 1 - Math.abs(position) );
+
+                page.setAlpha(normalizedposition);  //View의 투명도 조절
+                page.setScaleX(normalizedposition/2 + 0.5f); //View의 x축 크기조절
+                page.setScaleY(normalizedposition/2 + 0.5f); //View의 y축 크기조절
+                page.setRotationY(position * 80);   //View의 Y축(세로축) 회전 각도
+            }
+        });
 //            System.out.println("============================");
 //            viewSwitcher.addView(pager);
         }
