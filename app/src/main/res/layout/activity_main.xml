@@ -51,20 +51,28 @@
                     android:layout_height="match_parent"
                     android:orientation="vertical">
 
-                    <!--<GridView-->
-                        <!--android:layout_width="match_parent"-->
-                        <!--android:layout_height="match_parent"-->
+                    <ViewSwitcher
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:id="@+id/viewSwitcher" >
 
-                        <!--android:numColumns="3"-->
-                        <!--android:verticalSpacing="10dp"-->
-                        <!--android:horizontalSpacing="10dp"-->
-                        <!--android:stretchMode="columnWidth"-->
-                        <!--android:id="@+id/gridView" />-->
-                    <android.support.v4.view.ViewPager
-                        android:id="@+id/main_viewPager"
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent">
-                    </android.support.v4.view.ViewPager>
+                        <GridView
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+
+                            android:numColumns="3"
+                            android:verticalSpacing="10dp"
+                            android:horizontalSpacing="10dp"
+                            android:stretchMode="columnWidth"
+                            android:id="@+id/gridView" />
+
+                        <android.support.v4.view.ViewPager
+                            android:id="@+id/main_viewPager"
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent">
+                        </android.support.v4.view.ViewPager>
+                    </ViewSwitcher>
+
                 </LinearLayout>
 
                 <LinearLayout
