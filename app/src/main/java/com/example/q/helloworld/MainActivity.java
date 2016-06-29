@@ -6,6 +6,7 @@ import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Vibrator;
+import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AppCompatActivity;
 
 import android.util.Log;
@@ -94,7 +95,15 @@ public class MainActivity extends AppCompatActivity {
         tabHost.getTabWidget().getChildAt(1).getLayoutParams().height=80;
         tabHost.getTabWidget().getChildAt(2).getLayoutParams().height=80;
 
-
+        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
+        fab.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                //Intent intent = new Intent(MainActivity.this, NewMessageActivity.class);
+               // startActivity(intent);
+                addListContact();
+            }
+        });
     }
 
 
