@@ -7,6 +7,7 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.os.Vibrator;
 import android.support.v7.app.AppCompatActivity;
+
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -167,9 +168,15 @@ public class MainActivity extends AppCompatActivity {
         Intent intent = new Intent(Intent.ACTION_DIAL, Uri.parse("tel:"+num));
         startActivity(intent);
     }
-
+    int dummyn = 0;
     protected void addListContact()
     {
+        String a = "dum";
+        String email = "@gmail.com";
+        String num = String.valueOf(dummyn);
+        dummyn+=1;
+        contactList.add(new Person(a+num, a+num+email, num));
+        Adapter.notifyDataSetChanged();
        return;
     }
 
