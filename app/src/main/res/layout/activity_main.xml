@@ -66,11 +66,31 @@
                             android:stretchMode="columnWidth"
                             android:id="@+id/gridView" />
 
-                        <android.support.v4.view.ViewPager
-                            android:id="@+id/main_viewPager"
+                        <FrameLayout
                             android:layout_width="match_parent"
                             android:layout_height="match_parent">
-                        </android.support.v4.view.ViewPager>
+
+                            <android.support.design.widget.FloatingActionButton
+                                android:layout_width="100dp"
+                                android:layout_height="100dp"
+                                android:scaleType="fitCenter"
+                                android:id="@+id/imageButton"
+                                android:layout_margin="@dimen/fab_margin"
+                                android:layout_gravity="bottom|end"
+                                android:onClick="BackToGrid"
+                                android:src="@drawable/goback"/>
+
+                            <android.support.v4.view.ViewPager
+                                android:id="@+id/main_viewPager"
+                                android:layout_width="match_parent"
+                                android:layout_height="match_parent">
+                            </android.support.v4.view.ViewPager>
+
+
+
+
+                        </FrameLayout>
+
                     </ViewSwitcher>
 
                 </LinearLayout>

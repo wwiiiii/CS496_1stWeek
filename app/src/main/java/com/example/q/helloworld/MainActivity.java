@@ -50,6 +50,9 @@ public class MainActivity extends AppCompatActivity {
     private NewAdapter adapter;
     private ViewSwitcher viewSwitcher;
 
+    public void BackToGrid(View v){
+        viewSwitcher.showNext();
+    }
        @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
