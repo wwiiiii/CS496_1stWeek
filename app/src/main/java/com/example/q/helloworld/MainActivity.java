@@ -162,6 +162,7 @@ public class MainActivity extends AppCompatActivity {
                 e.printStackTrace();
             }
         }
+        res.add(new Person("","",""));
         return res;
     }
     public void buttonPushed(View view)
@@ -180,13 +181,31 @@ public class MainActivity extends AppCompatActivity {
     int dummyn = 0;
     protected void addListContact()
     {
-        String a = "dum";
-        String email = "@gmail.com";
-        String num = String.valueOf(dummyn);
-        dummyn+=1;
-        contactList.add(new Person(a+num, a+num+email, num));
-        Adapter.notifyDataSetChanged();
-       return;
+        Intent intent = new Intent(MainActivity.this, addActivity.class);
+        startActivityForResult(intent, 1);
+        return;
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data)
+    {
+        super.onActivityResult(requestCode, resultCode, data);
+        if(resultCode == RESULT_OK)
+        {
+            if(requestCode == 1)
+            {
+                String name = data.getStringExtra("data_name");
+                String email = data.getStringExtra("data_email");
+                String mobile = data.getStringExtra("data_mobile");
+                contactList.add(contactList.size()-1,new Person(name, email, mobile));
+                Adapter.notifyDataSetChanged();
+            }
+        }
+        else if(resultCode == RESULT_CANCELED)
+        {
+            Toast.makeText(getApplicationContext(), "Input Canceled!", Toast.LENGTH_SHORT);
+        }
+
     }
 
     class Person{
