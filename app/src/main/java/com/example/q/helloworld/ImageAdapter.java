@@ -12,14 +12,14 @@ import android.widget.ImageView;
  */
 
 public class ImageAdapter extends BaseAdapter {
-    private Context mContext;
+    private MainActivity mContext;
 
-    public ImageAdapter(Context c) {
+    public ImageAdapter(MainActivity c) {
         mContext = c;
     }
 
     public int getCount() {
-        return mThumbIds.length;
+        return mContext.mThumbIds.length;
     }
 
     public Object getItem(int position) {
@@ -40,21 +40,7 @@ public class ImageAdapter extends BaseAdapter {
         } else {
             imageView = (ImageView) convertView;
         }
-        imageView.setImageResource(mThumbIds[position]);
+        imageView.setImageResource(mContext.mThumbIds[position]);
         return imageView;
     }
-
-    private Integer[] mThumbIds = {
-            R.drawable.pic19, R.drawable.pic10,
-            R.drawable.sample_4, R.drawable.sample_5,
-            R.drawable.sample_6, R.drawable.sample_7,
-            R.drawable.pic8, R.drawable.pic3,
-            R.drawable.pic10, R.drawable.sample_3,
-            R.drawable.sample_4, R.drawable.pic7,
-            R.drawable.pic8, R.drawable.sample_7,
-            R.drawable.sample_0, R.drawable.sample_1,
-            R.drawable.sample_2, R.drawable.pic5,
-            R.drawable.pic8, R.drawable.sample_5,
-            R.drawable.sample_6, R.drawable.sample_7
-    };
 }
