@@ -1,3 +1,4 @@
 <resources>
     <string name="app_name">Helloworld</string>
+    <string name="large_test">Large Test</string>
 </resources>

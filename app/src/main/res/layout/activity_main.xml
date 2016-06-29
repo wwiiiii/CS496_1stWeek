@@ -55,12 +55,11 @@
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
 
-                        android:numColumns="auto_fit"
+                        android:numColumns="3"
                         android:verticalSpacing="10dp"
                         android:horizontalSpacing="10dp"
                         android:stretchMode="columnWidth"
                         android:id="@+id/gridView" />
-
                 </LinearLayout>
 
                 <LinearLayout
