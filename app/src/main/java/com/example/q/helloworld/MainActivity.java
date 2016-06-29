@@ -8,7 +8,9 @@ import android.os.Bundle;
 import android.os.Vibrator;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.GridLayout;
@@ -50,9 +52,9 @@ public class MainActivity extends AppCompatActivity {
     // contacts JSONArray
     JSONArray contacts = null;
 
-    // Hashmap for ListView
-    ArrayList<HashMap<String, String>> contactList;
-    ListAdapter Adapter;
+
+    ArrayList<Person> contactList;
+    ArrayAdapter Adapter;
     Vibrator vibrator;
 
     @Override
@@ -70,16 +72,14 @@ public class MainActivity extends AppCompatActivity {
         contactList = jsonStringToList(loadJsonData());
 
 
-        Adapter = new SimpleAdapter(
-                MainActivity.this, contactList, R.layout.my_item_view,//list_item,
-                new String[]    { TAG_NAME , TAG_EMAIL, TAG_PHONE_MOBILE  },
-                new int[]       { R.id.name, R.id.email, R.id.mobile        }
+        Adapter = new PersonAdapter(
+                this, R.layout.my_item_view, contactList
         );
+
 
 
         ListView list = (ListView)findViewById(R.id.listView);
         list.setAdapter(Adapter);
-
 
         tabHost.addTab(spec1);
 
@@ -116,9 +116,9 @@ public class MainActivity extends AppCompatActivity {
         return writer.toString();
     }
 
-    protected ArrayList<HashMap<String,String>> jsonStringToList(String jsonStr)
+    protected ArrayList<Person> jsonStringToList(String jsonStr)
     {
-        ArrayList<HashMap<String,String>> res = new ArrayList<HashMap<String,String>>();
+        ArrayList<Person> res = new ArrayList<Person>();
         if (jsonStr != null) {
             try {
                 JSONObject jsonObj = new JSONObject(jsonStr);
@@ -142,14 +142,8 @@ public class MainActivity extends AppCompatActivity {
                     String home = phone.getString(TAG_PHONE_HOME);
                     String office = phone.getString(TAG_PHONE_OFFICE);
 
-                    // tmp hashmap for single contact
-                    HashMap<String, String> contact = new HashMap<String, String>();
 
-                    // adding each child node to HashMap key => value
-                    contact.put(TAG_ID, id);
-                    contact.put(TAG_NAME, name);
-                    contact.put(TAG_EMAIL, email);
-                    contact.put(TAG_PHONE_MOBILE, mobile);
+                    Person contact = new Person(name,email,mobile);
 
                     // adding contact to contact list
                     res.add(contact);
@@ -177,5 +171,54 @@ public class MainActivity extends AppCompatActivity {
     protected void addListContact()
     {
        return;
+    }
+
+    class Person{
+        public String name;
+        public String email;
+        public String mobile;
+
+        public Person(String _name, String _email, String _mobile)
+        {
+            this.name = _name;
+            this.email = _email;
+            this.mobile = _mobile;
+        }
+
+    }
+
+    private class PersonAdapter extends ArrayAdapter<Person>{
+
+        private ArrayList<Person> items;
+
+        public PersonAdapter(Context context, int textViewResourceId, ArrayList<Person> items){
+            super(context, textViewResourceId, items);
+            this.items = items;
+        }
+
+        @Override
+        public View getView(int position, View convertView, ViewGroup parent) {
+            View v = convertView;
+            if (v == null) {
+                LayoutInflater vi = (LayoutInflater) getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+                v = vi.inflate(R.layout.my_item_view, null);
+            }
+            Person p = items.get(position);
+            if (p != null) {
+                TextView nameV = (TextView) v.findViewById(R.id.name);
+                TextView emailV = (TextView) v.findViewById(R.id.email);
+                TextView mobileV = (TextView) v.findViewById(R.id.mobile);
+                if (nameV != null) {
+                    nameV.setText(p.name);
+                }
+                if (emailV != null) {
+                    emailV.setText(p.email);
+                }
+                if (mobileV != null) {
+                    mobileV.setText(p.mobile);
+                }
+            }
+            return v;
+        }
     }
 }
