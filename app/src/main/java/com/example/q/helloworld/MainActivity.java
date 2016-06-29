@@ -1,9 +1,11 @@
 package com.example.q.helloworld;
 
 import android.app.Activity;
+import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
+import android.os.Vibrator;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
@@ -14,6 +16,7 @@ import android.widget.GridView;
 import android.widget.ListAdapter;
 import android.widget.ListView;
 import android.widget.SimpleAdapter;
+import android.widget.SimpleCursorAdapter;
 import android.widget.TabHost;
 import android.widget.TabHost.TabSpec;
 import android.widget.TextView;
@@ -49,29 +52,30 @@ public class MainActivity extends AppCompatActivity {
 
     // Hashmap for ListView
     ArrayList<HashMap<String, String>> contactList;
+    ListAdapter Adapter;
+    Vibrator vibrator;
 
-   // String[] contacts ={"1","2","3"};
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        vibrator = (Vibrator) getSystemService(Context.VIBRATOR_SERVICE);
 
         TabHost tabHost=(TabHost) findViewById(R.id.tabHost);
         tabHost.setup();
 
         TabSpec spec1= tabHost.newTabSpec("Tab A").setContent(R.id.linearLayout).setIndicator("Contacts");
 
-        /*
-        ArrayAdapter<String> Adapter;
-        Adapter = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, contacts);
-        */
+
         contactList = jsonStringToList(loadJsonData());
 
-        ListAdapter Adapter = new SimpleAdapter(
+
+        Adapter = new SimpleAdapter(
                 MainActivity.this, contactList, R.layout.my_item_view,//list_item,
                 new String[]    { TAG_NAME , TAG_EMAIL, TAG_PHONE_MOBILE  },
                 new int[]       { R.id.name, R.id.email, R.id.mobile        }
         );
+
 
         ListView list = (ListView)findViewById(R.id.listView);
         list.setAdapter(Adapter);
@@ -91,7 +95,6 @@ public class MainActivity extends AppCompatActivity {
 
 
     }
-
 
 
     protected String loadJsonData(){
@@ -162,10 +165,17 @@ public class MainActivity extends AppCompatActivity {
         /*TextView tv = (TextView)findViewById(R.id.name);
         String str = tv.toString();
         Log.w("tag",str);*/
+        vibrator.vibrate(1000);
         GridLayout parent = (GridLayout)view.getParent();
         TextView mobile = (TextView)parent.getChildAt(2);
-        Toast.makeText(getApplicationContext(), mobile.getText().toString(), Toast.LENGTH_SHORT).show();
-      //  Intent intent = new Intent(Intent.ACTION_DIAL, Uri.parse("01044257107"));
-      //  this.startActivity(intent);
+        String num = mobile.getText().toString();
+        Toast.makeText(getApplicationContext(), num, Toast.LENGTH_SHORT).show();
+        Intent intent = new Intent(Intent.ACTION_DIAL, Uri.parse("tel:"+num));
+        startActivity(intent);
+    }
+
+    protected void addListContact()
+    {
+       return;
     }
 }
