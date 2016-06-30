@@ -25,7 +25,18 @@ public class ImageAdapter extends BaseAdapter {
         mResized = new ArrayList<>();
         for (int i = 0; i < this.getCount(); i++) {
             Bitmap bitmap = BitmapFactory.decodeResource(mContext.getResources(), mContext.mThumbIds[i]);
-            mResized.add(bitmap.createScaledBitmap(bitmap, 500, 500, true));
+            float w=bitmap.getWidth();
+            float h=bitmap.getHeight();
+            if(w>h){
+                float ratio=h/w;
+                float height=150f*ratio;
+                mResized.add(bitmap.createScaledBitmap(bitmap, 150, (int)height, true));
+            }
+            else{
+                float ratio=w/h;
+                float width=150f*ratio;
+                mResized.add(bitmap.createScaledBitmap(bitmap, (int)width, 150, true));
+            }
         }
     }
     public int getCount() {
@@ -44,8 +55,8 @@ public class ImageAdapter extends BaseAdapter {
         ImageView imageView;
         if (convertView == null) {
             imageView = new ImageView(mContext.getContext());
-            imageView.setLayoutParams(new GridView.LayoutParams(500, 500));
-            imageView.setScaleType(ImageView.ScaleType.CENTER_CROP);
+            imageView.setLayoutParams(new GridView.LayoutParams(400, 400));
+            imageView.setScaleType(ImageView.ScaleType.FIT_CENTER);
             imageView.setPadding(8, 8, 8, 8);
         } else {
             imageView = (ImageView) convertView;
