@@ -1,6 +1,8 @@
 package com.example.q.helloworld;
 
 import android.provider.ContactsContract;
+import android.support.v4.view.ScaleGestureDetectorCompat;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewGroupCompat;
@@ -8,6 +10,7 @@ import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.MotionEvent;
+import android.view.ScaleGestureDetector;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.animation.Animation;
@@ -15,7 +18,9 @@ import android.view.animation.AnimationUtils;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.BaseAdapter;
+import android.widget.FrameLayout;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TabHost;
 import android.widget.TabHost.TabSpec;
 import android.widget.TextView;
@@ -51,6 +56,44 @@ public class MainActivity extends AppCompatActivity {
     private ViewPager pager;
     private NewAdapter adapter;
     private ViewSwitcher viewSwitcher;
+    private boolean isZoom=false;
+    private float sizeX;
+    private float sizeY;
+    protected class ScaleListener extends ScaleGestureDetector.SimpleOnScaleGestureListener {
+        ViewPager mPager;
+        public ScaleListener(ViewPager pager) {
+            mPager=pager;
+        }
+        @Override
+        public boolean onScale(ScaleGestureDetector detector) {
+            float scaleFactor = detector.getScaleFactor();
+            scaleFactor = Math.max(0.1f, Math.min(scaleFactor, 5.0f));
+//            Log.d("pager",""+scaleFactor);
+//            Log.d("pager",""+mPager.getCurrentItem());
+//            FrameLayout currentBox=(FrameLayout)mPager.findViewWithTag("pager"+mPager.getCurrentItem());
+            View currentView=mPager.findViewWithTag("pager"+mPager.getCurrentItem());
+//            Log.d("pager","box : "+currentBox.getClass().toString());
+//            View currentView = ((LinearLayout)currentBox.getChildAt(0)).getChildAt(0);
+//            Log.d("pager","view : "+currentView.getClass().toString());
+//            mPager.getAdapter().getItem;
+//            View currentView=mPager.getFocusedChild();
+//            Log.d("pager","current scaleX : "+currentView.getScaleX());
+            sizeX=currentView.getScaleX();
+//            Log.d("pager","sizeX : "+currentView.getScaleX());
+            Log.d("pager","scaleFactor : "+scaleFactor);
+            sizeY=currentView.getScaleY();
+            currentView.setScaleX(sizeX*scaleFactor);
+//            Log.d("pager","sizeX : "+currentView.getScaleX());
+            currentView.setScaleY(sizeY*scaleFactor);
+//            float sizeX=mPager.getScaleX();
+//            float sizeY=mPager.getScaleY();
+//            mPager.setScaleX(sizeX*scaleFactor);
+//            mPager.setScaleY(sizeY*scaleFactor);
+//            mPager.getChildAt(mPager.getCurrentItem()).setScaleY(scaleFactor);
+            return true;
+        }
+    }
+    private ScaleGestureDetector scaleGestureDetector;
 
     public void BackToGrid(View v){
         viewSwitcher.showNext();
@@ -95,20 +138,40 @@ public class MainActivity extends AppCompatActivity {
             adapter = new NewAdapter(this.getLayoutInflater(), this);
             pager.setAdapter(adapter);
             pager.setPageTransformer(false, new ViewPager.PageTransformer() {
-                        @Override
-                        public void transformPage(View page, float position) {
-                      float normalizedposition = Math.abs( 1 - Math.abs(position) );
+                @Override
+                public void transformPage(View page, float position) {
+                    float normalizedposition = Math.abs(1 - Math.abs(position));
 
-                page.setAlpha(normalizedposition);  //View의 투명도 조절
-                page.setScaleX(normalizedposition/2 + 0.5f); //View의 x축 크기조절
-                page.setScaleY(normalizedposition/2 + 0.5f); //View의 y축 크기조절
-                page.setRotationY(position * 80);   //View의 Y축(세로축) 회전 각도
-            }
-        });
-//            System.out.println("============================");
-//            viewSwitcher.addView(pager);
+                    page.setAlpha(normalizedposition);  //View의 투명도 조절
+                    page.setScaleX(normalizedposition / 2 + 0.5f); //View의 x축 크기조절
+                    page.setScaleY(normalizedposition / 2 + 0.5f); //View의 y축 크기조절
+                    page.setRotationY(position * 80);   //View의 Y축(세로축) 회전 각도
+                }
+            });
+
+            scaleGestureDetector=new ScaleGestureDetector(this, new ScaleListener(pager));
+            pager.setOnTouchListener(new View.OnTouchListener() {
+                @Override
+                public boolean onTouch(View v, MotionEvent event) {
+                    int act=event.getAction();
+                    switch(act&MotionEvent.ACTION_MASK) {
+                        case MotionEvent.ACTION_POINTER_DOWN:
+                            if(!isZoom)
+                                isZoom=true;
+                            break;
+                        case MotionEvent.ACTION_DOWN :
+                            break;
+                        case MotionEvent.ACTION_UP:
+                            isZoom=false;
+                            break;
+                        case MotionEvent.ACTION_MOVE:
+//                            if(!isZoom) return false;
+                    }
+                    scaleGestureDetector.onTouchEvent(event);
+                    return false;
+                }
+            });
         }
-
         tabHost.addTab(spec2);
 
         TabSpec spec3= tabHost.newTabSpec("Tab C").setContent(R.id.linearLayout3).setIndicator("Tab CC");
