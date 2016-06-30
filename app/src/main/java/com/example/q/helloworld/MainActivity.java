@@ -115,6 +115,7 @@ public class MainActivity extends AppCompatActivity {
                 addListContact();
             }
         });
+        sortContact();
 /*
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
@@ -125,6 +126,61 @@ public class MainActivity extends AppCompatActivity {
                 addListContact();
             }
         });*/
+    }
+
+    public JSONArray sortJsonArrayByName(JSONArray array)
+    {
+        try {
+            List<JSONObject> jsons = new ArrayList<JSONObject>();
+            for (int i = 0; i < array.length(); i++) {
+                jsons.add(array.getJSONObject(i));
+            }
+            Collections.sort(jsons, new Comparator<JSONObject>() {
+                @Override
+                public int compare(JSONObject lhs, JSONObject rhs) {
+                    try {
+                        String lid = lhs.getString("name");
+                        String rid = rhs.getString("name");
+                        // Here you could parse string id to integer and then compare.
+                        return lid.compareTo(rid);
+                    }catch(Exception e){}
+                    return 1;
+                }
+            });
+            return new JSONArray(jsons);
+        }catch(Exception e){debug("sort error : " + e.toString());}
+        return null;
+    }
+
+    public void sortContact()
+    {
+        try {
+            JSONObject jsonObj = new JSONObject(loadJsonData());
+            JSONArray arr = jsonObj.getJSONArray(TAG_CONTACTS);
+            JSONArray newarr = sortJsonArrayByName(arr);
+            JSONObject res = new JSONObject();
+            res.put("contacts", newarr);
+            saveToIntDir(res.toString(), jsonPath);
+            debug("sortContact Result : " + res.toString());
+        } catch (Exception e) {
+            debug("sortContact : json error");
+        }
+        //contactList = jsonStringToList(loadJsonData());
+        contactList.remove(contactList.size()-1);
+        Collections.sort(contactList, new Comparator<Person>() {
+            @Override
+            public int compare(Person lhs, Person rhs) {
+                try {
+                    String lid = lhs.name;
+                    String rid = rhs.name;
+                    // Here you could parse string id to integer and then compare.
+                    return lid.compareTo(rid);
+                }catch(Exception e){}
+                return 1;
+            }
+        });
+        contactList.add(new Person("","",""));
+        Adapter.notifyDataSetChanged();
     }
 
     public void removeContact(int pos)
@@ -147,7 +203,6 @@ public class MainActivity extends AppCompatActivity {
         } catch (JSONException e) {
             debug("removeContact : json error");
         }
-
     }
     class ListViewItemLongClickListener implements AdapterView.OnItemLongClickListener
     {
@@ -382,6 +437,7 @@ public class MainActivity extends AppCompatActivity {
                 Person newb = new Person(name, email, mobile);
                 contactList.add(contactList.size()-1,newb);
                 savePersonToInternal(newb);
+                sortContact();
                 Adapter.notifyDataSetChanged();
             }
         }
