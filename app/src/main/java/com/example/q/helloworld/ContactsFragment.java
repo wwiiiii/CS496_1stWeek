@@ -1,16 +1,19 @@
 package com.example.q.helloworld;
 
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Vibrator;
 import android.support.v4.app.Fragment;
+import android.support.v7.app.AlertDialog;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.app.Activity;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ImageButton;
 import android.widget.LinearLayout;
@@ -32,6 +35,9 @@ import java.io.Reader;
 import java.io.StringWriter;
 import java.io.Writer;
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.List;
 
 
 public class ContactsFragment extends Fragment {
@@ -75,6 +81,35 @@ public class ContactsFragment extends Fragment {
 //        }
     }
 
+    @Override
+    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+                             Bundle savedInstanceState) {
+        // Inflate the layout for this fragment
+        View v=inflater.inflate(R.layout.fragment_contacts, container, false);
+
+        vibrator = (Vibrator) getContext().getSystemService(Context.VIBRATOR_SERVICE);
+        jsonPath = getContext().getFilesDir().getAbsolutePath() + "/Roche";
+        contactList = jsonStringToList(loadJsonData());
+
+        Adapter = new PersonAdapter(
+                getContext(), R.layout.my_item_view, contactList
+        );
+        ListView list = (ListView)v.findViewById(R.id.listView);
+        list.setAdapter(Adapter);
+
+        ImageButton but = (ImageButton)v.findViewById(R.id.button);
+        but.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                //Intent intent = new Intent(MainActivity.this, NewMessageActivity.class);
+                // startActivity(intent);
+                addListContact();
+            }
+        });
+        list.setOnItemLongClickListener(new ListViewItemLongClickListener());
+        sortContact();
+        return v;
+    }
     protected String loadJsonDataFromInternal(String dirPath)
     {
         String res = "";
@@ -270,6 +305,7 @@ public class ContactsFragment extends Fragment {
                 Person newb = new Person(name, email, mobile);
                 contactList.add(contactList.size()-1,newb);
                 savePersonToInternal(newb);
+                sortContact();
                 Adapter.notifyDataSetChanged();
             }
         }
@@ -326,35 +362,120 @@ public class ContactsFragment extends Fragment {
         }
     }
 
-    @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
-        View v=inflater.inflate(R.layout.fragment_contacts, container, false);
 
-        vibrator = (Vibrator) getContext().getSystemService(Context.VIBRATOR_SERVICE);
-        jsonPath = getContext().getFilesDir().getAbsolutePath() + "/Roche";
-        contactList = jsonStringToList(loadJsonData());
-
-        Adapter = new PersonAdapter(
-                getContext(), R.layout.my_item_view, contactList
-        );
-        ListView list = (ListView)v.findViewById(R.id.listView);
-        list.setAdapter(Adapter);
-
-        ImageButton but = (ImageButton)v.findViewById(R.id.button);
-        but.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                //Intent intent = new Intent(MainActivity.this, NewMessageActivity.class);
-                // startActivity(intent);
-                addListContact();
+    public JSONArray sortJsonArrayByName(JSONArray array)
+    {
+        try {
+            List<JSONObject> jsons = new ArrayList<JSONObject>();
+            for (int i = 0; i < array.length(); i++) {
+                jsons.add(array.getJSONObject(i));
             }
-        });
-
-        return v;
+            Collections.sort(jsons, new Comparator<JSONObject>() {
+                @Override
+                public int compare(JSONObject lhs, JSONObject rhs) {
+                    try {
+                        String lid = lhs.getString("name");
+                        String rid = rhs.getString("name");
+                        // Here you could parse string id to integer and then compare.
+                        return lid.compareTo(rid);
+                    }catch(Exception e){}
+                    return 1;
+                }
+            });
+            return new JSONArray(jsons);
+        }catch(Exception e){debug("sort error : " + e.toString());}
+        return null;
     }
 
+    public void sortContact()
+    {
+        try {
+            JSONObject jsonObj = new JSONObject(loadJsonData());
+            JSONArray arr = jsonObj.getJSONArray(TAG_CONTACTS);
+            JSONArray newarr = sortJsonArrayByName(arr);
+            JSONObject res = new JSONObject();
+            res.put("contacts", newarr);
+            saveToIntDir(res.toString(), jsonPath);
+            debug("sortContact Result : " + res.toString());
+        } catch (Exception e) {
+            debug("sortContact : json error");
+        }
+        //contactList = jsonStringToList(loadJsonData());
+        contactList.remove(contactList.size()-1);
+        Collections.sort(contactList, new Comparator<Person>() {
+            @Override
+            public int compare(Person lhs, Person rhs) {
+                try {
+                    String lid = lhs.name;
+                    String rid = rhs.name;
+                    // Here you could parse string id to integer and then compare.
+                    return lid.compareTo(rid);
+                }catch(Exception e){}
+                return 1;
+            }
+        });
+        contactList.add(new Person("","",""));
+        Adapter.notifyDataSetChanged();
+    }
+
+    public void removeContact(int pos)
+    {
+        contactList.remove(pos);
+        Adapter.notifyDataSetChanged();
+        try {
+            JSONObject jsonObj = new JSONObject(loadJsonData());
+            JSONArray arr = jsonObj.getJSONArray(TAG_CONTACTS);
+            JSONArray newarr = new JSONArray();
+            for(int i=0;i<arr.length();i++)
+            {
+                if(i == pos) continue;
+                newarr.put(arr.getJSONObject(i));
+            }
+            JSONObject res = new JSONObject();
+            res.put("contacts", newarr);
+            saveToIntDir(res.toString(), jsonPath);
+            debug("removeContact Result : " + res.toString());
+        } catch (JSONException e) {
+            debug("removeContact : json error");
+        }
+    }
+    class ListViewItemLongClickListener implements AdapterView.OnItemLongClickListener
+    {
+        @Override
+        public boolean onItemLongClick(AdapterView<?> av, View view, int pos, long id){
+            debug("LONG CLICK with "+pos+" "+id);
+            AlertDialog.Builder alertDlg = new AlertDialog.Builder(view.getContext());
+            alertDlg.setTitle("삭제");
+            final int position = pos;
+            // '예' 버튼이 클릭되면
+            alertDlg.setNegativeButton( "예", new DialogInterface.OnClickListener()
+            {
+                @Override
+                public void onClick( DialogInterface dialog, int which )
+                {
+                    debug("longClick : Yes");
+                    removeContact(position);
+                    Adapter.notifyDataSetChanged();
+                    dialog.dismiss();  // AlertDialog를 닫는다.
+                }
+            });
+
+            // '아니오' 버튼이 클릭되면
+            alertDlg.setPositiveButton( "아니오", new DialogInterface.OnClickListener()
+            {
+                @Override
+                public void onClick( DialogInterface dialog, int which ) {
+                    debug("longClick : No");
+                    dialog.dismiss();  // AlertDialog를 닫는다.
+                }
+            });
+
+            alertDlg.setMessage( String.format( "\"%s\"를 삭제하시겠습니까?",
+                    contactList.get(pos).name) );
+            alertDlg.show();
+            return true;
+        }
+    };
     // TODO: Rename method, update argument and hook method into UI event
     public void onButtonPressed(Uri uri) {
 //        if (mListener != null) {
@@ -393,4 +514,6 @@ public class ContactsFragment extends Fragment {
 //        // TODO: Update argument type and name
 //        void onFragmentInteraction(Uri uri);
 //    }
+
+
 }
