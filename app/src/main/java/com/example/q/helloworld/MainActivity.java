@@ -32,14 +32,14 @@ public class MainActivity extends AppCompatActivity {
         FragmentTabHost tabHost=(FragmentTabHost)findViewById(R.id.tabHost);
         tabHost.setup(this,getSupportFragmentManager(),R.id.realtabcontent);
 
-        tabHost.addTab(tabHost.newTabSpec(ContactsFragment.class.getSimpleName()).setIndicator("CONTACTS!!"),ContactsFragment.class,null);
+        tabHost.addTab(tabHost.newTabSpec(ContactsFragment.class.getSimpleName()).setIndicator("CONTACTS"),ContactsFragment.class,null);
 //        mContactsFragment=(ContactsFragment)getSupportFragmentManager().findFragmentByTag(ContactsFragment.class.getSimpleName());
 //        Log.d("frag","mContactsFragment" + mContactsFragment.toString());
-        tabHost.addTab(tabHost.newTabSpec("gallery").setIndicator("GALLERY!!"),GalleryFragment.class,null);
-        tabHost.addTab(tabHost.newTabSpec("sphere").setIndicator("SPHERE!!"),SphereFragment.class,null);
+        tabHost.addTab(tabHost.newTabSpec("gallery").setIndicator("GALLERY"),GalleryFragment.class,null);
+        tabHost.addTab(tabHost.newTabSpec("sphere").setIndicator("MOTION"),SphereFragment.class,null);
 
         for(int i=0;i<tabHost.getTabWidget().getChildCount();i++)
-            tabHost.getTabWidget().getChildAt(i).getLayoutParams().height=80;
+            tabHost.getTabWidget().getChildAt(i).getLayoutParams().height=120;
     }
     @Override
     public void onAttachFragment(Fragment frag) {
