@@ -15,6 +15,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
 import android.widget.GridLayout;
 import android.widget.GridView;
 import android.widget.ListAdapter;
@@ -99,6 +100,16 @@ public class MainActivity extends AppCompatActivity {
         tabHost.getTabWidget().getChildAt(1).getLayoutParams().height=80;
         tabHost.getTabWidget().getChildAt(2).getLayoutParams().height=80;
 
+        Button but = (Button) findViewById(R.id.button);
+        but.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                //Intent intent = new Intent(MainActivity.this, NewMessageActivity.class);
+                // startActivity(intent);
+                addListContact();
+            }
+        });
+/*
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -107,7 +118,7 @@ public class MainActivity extends AppCompatActivity {
                // startActivity(intent);
                 addListContact();
             }
-        });
+        });*/
     }
 
     protected String loadJsonDataFromInternal(String dirPath)
