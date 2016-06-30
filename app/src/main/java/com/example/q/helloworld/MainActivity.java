@@ -2,11 +2,13 @@ package com.example.q.helloworld;
 
 import android.app.Activity;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Vibrator;
 import android.support.design.widget.FloatingActionButton;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 
 import android.util.Log;
@@ -102,6 +104,8 @@ public class MainActivity extends AppCompatActivity {
         tabHost.getTabWidget().getChildAt(1).getLayoutParams().height=80;
         tabHost.getTabWidget().getChildAt(2).getLayoutParams().height=80;
 
+        list.setOnItemLongClickListener(new ListViewItemLongClickListener());
+
         ImageButton but = (ImageButton) findViewById(R.id.button);
         but.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -123,6 +127,65 @@ public class MainActivity extends AppCompatActivity {
         });*/
     }
 
+    public void removeContact(int pos)
+    {
+        contactList.remove(pos);
+        Adapter.notifyDataSetChanged();
+        try {
+            JSONObject jsonObj = new JSONObject(loadJsonData());
+            JSONArray arr = jsonObj.getJSONArray(TAG_CONTACTS);
+            JSONArray newarr = new JSONArray();
+            for(int i=0;i<arr.length();i++)
+            {
+                if(i == pos) continue;
+                newarr.put(arr.getJSONObject(i));
+            }
+            JSONObject res = new JSONObject();
+            res.put("contacts", newarr);
+            saveToIntDir(res.toString(), jsonPath);
+            debug("removeContact Result : " + res.toString());
+        } catch (JSONException e) {
+            debug("removeContact : json error");
+        }
+
+    }
+    class ListViewItemLongClickListener implements AdapterView.OnItemLongClickListener
+    {
+        @Override
+        public boolean onItemLongClick(AdapterView<?> av, View view, int pos, long id){
+            debug("LONG CLICK with "+pos+" "+id);
+            AlertDialog.Builder alertDlg = new AlertDialog.Builder(view.getContext());
+            alertDlg.setTitle("삭제");
+            final int position = pos;
+            // '예' 버튼이 클릭되면
+            alertDlg.setNegativeButton( "예", new DialogInterface.OnClickListener()
+            {
+                @Override
+                public void onClick( DialogInterface dialog, int which )
+                {
+                    debug("longClick : Yes");
+                    removeContact(position);
+                    Adapter.notifyDataSetChanged();
+                    dialog.dismiss();  // AlertDialog를 닫는다.
+                }
+            });
+
+            // '아니오' 버튼이 클릭되면
+            alertDlg.setPositiveButton( "아니오", new DialogInterface.OnClickListener()
+            {
+                @Override
+                public void onClick( DialogInterface dialog, int which ) {
+                    debug("longClick : No");
+                    dialog.dismiss();  // AlertDialog를 닫는다.
+                }
+            });
+
+            alertDlg.setMessage( String.format( "\"%s\"를 삭제하시겠습니까?",
+                    contactList.get(pos).name) );
+            alertDlg.show();
+            return true;
+        }
+    };
     protected String loadJsonDataFromInternal(String dirPath)
     {
         String res = "";
@@ -351,7 +414,11 @@ public class MainActivity extends AppCompatActivity {
             super(context, textViewResourceId, items);
             this.items = items;
         }
-
+        @Override
+        public boolean isEnabled(int position)
+        {
+            return true;
+        }
         @Override
         public View getView(int position, View convertView, ViewGroup parent) {
             View v = convertView;

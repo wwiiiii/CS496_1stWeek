@@ -53,12 +53,13 @@
                     android:layout_height="match_parent">
 
 
-
                     <ListView
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:id="@+id/listView"
-                        android:focusable="true" />
+                        android:focusable="true"
+                        android:clickable="false"
+                        android:longClickable="true" />
 
                     <ImageButton
                         android:layout_width="62dp"
