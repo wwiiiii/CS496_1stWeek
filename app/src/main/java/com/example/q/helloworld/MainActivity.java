@@ -68,9 +68,6 @@ public class MainActivity extends AppCompatActivity {
         public boolean onScale(ScaleGestureDetector detector) {
             float scaleFactor = detector.getScaleFactor();
             scaleFactor = Math.max(0.1f, Math.min(scaleFactor, 5.0f));
-//            Log.d("pager",""+scaleFactor);
-//            Log.d("pager",""+mPager.getCurrentItem());
-//            FrameLayout currentBox=(FrameLayout)mPager.findViewWithTag("pager"+mPager.getCurrentItem());
             View currentView=mPager.findViewWithTag("pager"+mPager.getCurrentItem());
 //            Log.d("pager","box : "+currentBox.getClass().toString());
 //            View currentView = ((LinearLayout)currentBox.getChildAt(0)).getChildAt(0);
