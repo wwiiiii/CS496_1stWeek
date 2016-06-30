@@ -18,6 +18,7 @@ import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.GridLayout;
 import android.widget.GridView;
+import android.widget.ImageButton;
 import android.widget.LinearLayout;
 import android.widget.ListAdapter;
 import android.widget.ListView;
@@ -101,7 +102,7 @@ public class MainActivity extends AppCompatActivity {
         tabHost.getTabWidget().getChildAt(1).getLayoutParams().height=80;
         tabHost.getTabWidget().getChildAt(2).getLayoutParams().height=80;
 
-        Button but = (Button) findViewById(R.id.button);
+        ImageButton but = (ImageButton) findViewById(R.id.button);
         but.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {

@@ -60,12 +60,15 @@
                         android:id="@+id/listView"
                         android:focusable="true" />
 
-                    <Button
-                        android:layout_width="61dp"
+                    <ImageButton
+                        android:layout_width="62dp"
                         android:layout_height="wrap_content"
-                        android:text="New Button"
+                        android:src = "@drawable/plus_white"
                         android:id="@+id/button"
-                        android:layout_gravity="right|bottom" />
+                        android:layout_gravity="right|bottom"
+                        android:scaleType="fitCenter"
+                        android:background="@android:color/transparent" />
+                    <!--android:background="@android:color/transparent" />-->
 
 
                 </FrameLayout>
