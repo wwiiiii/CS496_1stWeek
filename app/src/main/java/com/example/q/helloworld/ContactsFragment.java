@@ -274,8 +274,10 @@ public class ContactsFragment extends Fragment {
     public void buttonPushed(View view)
     {
         vibrator.vibrate(1000);
-        LinearLayout parent = (LinearLayout) (((LinearLayout)view.getParent()).getChildAt(0));
-        TextView mobile = (TextView)parent.getChildAt(2);
+        LinearLayout parent = (LinearLayout)view.getParent();
+        parent = (LinearLayout) parent.getChildAt(0);
+        parent = (LinearLayout) parent.getChildAt(2);
+        TextView mobile = (TextView)parent.getChildAt(1);
         String num = mobile.getText().toString();
         Toast.makeText(getContext(), num, Toast.LENGTH_SHORT).show();
         Intent intent = new Intent(Intent.ACTION_DIAL, Uri.parse("tel:"+num));
@@ -357,6 +359,7 @@ public class ContactsFragment extends Fragment {
                 }
             }
             ImageButton button = (ImageButton) v.findViewById(R.id.call);
+            debug("button : " + button.toString());
             button.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
