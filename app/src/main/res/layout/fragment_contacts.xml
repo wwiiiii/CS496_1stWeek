@@ -4,16 +4,19 @@
     android:layout_height="match_parent"
     tools:context="com.example.q.helloworld.ContactsFragment">
 
-    <!-- TODO: Update blank fragment layout -->
-    <TextView
+    <ListView
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:text="@string/hello_blank_fragment" />
-
-    <Button
-        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="New Button"
-        android:id="@+id/button" />
+        android:id="@+id/listView"
+        android:focusable="true" />
+
+    <ImageButton
+        android:layout_width="62dp"
+        android:layout_height="wrap_content"
+        android:src = "@drawable/plus_white"
+        android:id="@+id/button"
+        android:layout_gravity="right|bottom"
+        android:scaleType="fitCenter"
+        android:background="@android:color/transparent" />
 
 </FrameLayout>

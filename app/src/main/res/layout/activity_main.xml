@@ -30,56 +30,11 @@
                 android:layout_width="0dp"
                 android:layout_height="0dp"
                 android:layout_weight="0"/>
-
-                <!--<LinearLayout-->
-                    <!--android:id="@+id/linearLayout"-->
-                    <!--android:layout_width="match_parent"-->
-                    <!--android:layout_height="match_parent"-->
-                    <!--android:orientation="vertical">-->
-
-                    <!--<ListView-->
-                        <!--android:layout_width="match_parent"-->
-                        <!--android:layout_height="wrap_content"-->
-                        <!--android:id="@+id/listView"-->
-                        <!--android:focusable="true" />-->
-
-                <!--</LinearLayout>-->
-
-                <!--<LinearLayout-->
-                    <!--android:id="@+id/linearLayout2"-->
-                    <!--android:layout_width="match_parent"-->
-                    <!--android:layout_height="match_parent"-->
-                    <!--android:orientation="vertical">-->
-
-                    <!--<CheckBox-->
-                        <!--android:layout_width="wrap_content"-->
-                        <!--android:layout_height="wrap_content"-->
-                        <!--android:text="New CheckBox"-->
-                        <!--android:id="@+id/checkBox"-->
-                        <!--android:layout_gravity="center_horizontal" />-->
-                <!--</LinearLayout>-->
-
-                <!--<LinearLayout-->
-                    <!--android:id="@+id/linearLayout3"-->
-                    <!--android:layout_width="match_parent"-->
-                    <!--android:layout_height="match_parent"-->
-                    <!--android:orientation="vertical">-->
-
-                    <!--<TextView-->
-                        <!--android:layout_width="wrap_content"-->
-                        <!--android:layout_height="wrap_content"-->
-                        <!--android:textAppearance="?android:attr/textAppearanceSmall"-->
-                        <!--android:text="Small Text"-->
-                        <!--android:id="@+id/textView"-->
-                        <!--android:layout_gravity="center_horizontal" />-->
-                <!--</LinearLayout>-->
-            <!--</FrameLayout>-->
-        <FrameLayout
-            android:id="@+id/realtabcontent"
-            android:layout_width="match_parent"
-            android:layout_height="0dp"
-            android:layout_weight="1"/>
-
+            <FrameLayout
+                android:id="@+id/realtabcontent"
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_weight="1"/>
         </LinearLayout>
     </android.support.v4.app.FragmentTabHost>
 </RelativeLayout>
