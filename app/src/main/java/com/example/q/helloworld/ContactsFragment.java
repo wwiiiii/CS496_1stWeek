@@ -101,8 +101,6 @@ public class ContactsFragment extends Fragment {
         but.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                //Intent intent = new Intent(MainActivity.this, NewMessageActivity.class);
-                // startActivity(intent);
                 addListContact();
             }
         });
@@ -294,7 +292,7 @@ public class ContactsFragment extends Fragment {
     public void onActivityResult(int requestCode, int resultCode, Intent data)
     {
         super.onActivityResult(requestCode, resultCode, data);
-        Log.d("gimun","Fragment's onActivityResult called");
+        debug("onActivity called");
         if(resultCode == Activity.RESULT_OK)
         {
             if(requestCode == 1)
@@ -358,6 +356,13 @@ public class ContactsFragment extends Fragment {
                     mobileV.setText(p.mobile);
                 }
             }
+            ImageButton button = (ImageButton) v.findViewById(R.id.call);
+            button.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    buttonPushed(view);
+                }
+            });
             return v;
         }
     }

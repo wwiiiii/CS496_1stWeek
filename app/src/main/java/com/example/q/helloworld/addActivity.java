@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.view.Window;
 import android.widget.Button;
@@ -38,9 +39,14 @@ public class addActivity extends Activity {
         });
 
     }
+    public void debug(String str)
+    {
+        Log.v("mydebug",str);
+    }
 
     protected void onConfirm(View view)
     {
+        debug("onConfirm");
         Intent intent = getIntent();
         String name = ((TextView)findViewById(R.id.inputName)).getText().toString();
         String email = ((TextView)findViewById(R.id.inputEmail)).getText().toString();
@@ -54,6 +60,7 @@ public class addActivity extends Activity {
 
     protected void onCancel(View view)
     {
+        debug("onCancel");
         setResult(RESULT_CANCELED, getIntent());
         finish();
     }
