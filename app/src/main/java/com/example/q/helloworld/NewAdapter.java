@@ -17,13 +17,13 @@ import android.widget.ImageView;
 public class NewAdapter extends PagerAdapter {
 
     LayoutInflater inflater;
-    private MainActivity mContext;
+    private GalleryFragment mContext;
 
     @Override
     public int getCount(){
         return 22;
     }
-    public NewAdapter(LayoutInflater inflater, MainActivity c){
+    public NewAdapter(LayoutInflater inflater, GalleryFragment c){
         super();
         this.inflater=inflater;
         mContext=c;

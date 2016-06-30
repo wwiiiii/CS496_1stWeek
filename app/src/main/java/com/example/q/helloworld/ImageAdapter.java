@@ -17,10 +17,10 @@ import java.util.ArrayList;
  */
 
 public class ImageAdapter extends BaseAdapter {
-    private MainActivity mContext;
+    private GalleryFragment mContext;
     private ArrayList<Bitmap> mResized;
 
-    public ImageAdapter(MainActivity c) {
+    public ImageAdapter(GalleryFragment c) {
         mContext = c;
         mResized = new ArrayList<>();
         for (int i = 0; i < this.getCount(); i++) {
@@ -43,7 +43,7 @@ public class ImageAdapter extends BaseAdapter {
     public View getView(int position, View convertView, ViewGroup parent) {
         ImageView imageView;
         if (convertView == null) {
-            imageView = new ImageView(mContext);
+            imageView = new ImageView(mContext.getContext());
             imageView.setLayoutParams(new GridView.LayoutParams(500, 500));
             imageView.setScaleType(ImageView.ScaleType.CENTER_CROP);
             imageView.setPadding(8, 8, 8, 8);

@@ -23,6 +23,7 @@ public class MainActivity extends AppCompatActivity {
                                 "Jung Taeyoung",
                                 "Gimun"};
     ContactsFragment mContactsFragment;
+    GalleryFragment mGalleryFragment;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -48,9 +49,15 @@ public class MainActivity extends AppCompatActivity {
 //            Log.d("frag","mContactsFragment registered");
             mContactsFragment=(ContactsFragment)frag;
         }
+        else if(frag.getClass()==GalleryFragment.class) {
+            mGalleryFragment=(GalleryFragment)frag;
+        }
     }
 
-   /* public void callButtonPushed(View view) {
+    public void callButtonPushed(View view) {
         mContactsFragment.buttonPushed(view);
-    }*/
+    }
+    public void galleryBackToGrid(View view) {
+        mGalleryFragment.BackToGrid(view);
+    }
 }
