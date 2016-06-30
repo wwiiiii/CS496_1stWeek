@@ -10,6 +10,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.app.Activity;
 import android.widget.ArrayAdapter;
 import android.widget.ImageButton;
 import android.widget.LinearLayout;
@@ -72,25 +73,6 @@ public class ContactsFragment extends Fragment {
         super.onCreate(savedInstanceState);
 //        if (getArguments() != null) {
 //        }
-        vibrator = (Vibrator) getSystemService(Context.VIBRATOR_SERVICE);
-        jsonPath = getApplicationContext().getFilesDir().getAbsolutePath() + "/Roche";
-        contactList = jsonStringToList(loadJsonData());
-
-        Adapter = new PersonAdapter(
-                this, R.layout.my_item_view, contactList
-        );
-        ListView list = (ListView)findViewById(R.id.listView);
-        list.setAdapter(Adapter);
-
-        ImageButton but = (ImageButton) findViewById(R.id.button);
-        but.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                //Intent intent = new Intent(MainActivity.this, NewMessageActivity.class);
-                // startActivity(intent);
-                addListContact();
-            }
-        });
     }
 
     protected String loadJsonDataFromInternal(String dirPath)
@@ -262,22 +244,23 @@ public class ContactsFragment extends Fragment {
         LinearLayout parent = (LinearLayout) (((LinearLayout)view.getParent()).getChildAt(0));
         TextView mobile = (TextView)parent.getChildAt(2);
         String num = mobile.getText().toString();
-        Toast.makeText(getApplicationContext(), num, Toast.LENGTH_SHORT).show();
+        Toast.makeText(getContext(), num, Toast.LENGTH_SHORT).show();
         Intent intent = new Intent(Intent.ACTION_DIAL, Uri.parse("tel:"+num));
         startActivity(intent);
     }
 
     protected void addListContact()
     {
-        Intent intent = new Intent(ContactsFragment.this, addActivity.class);
+        Intent intent = new Intent(getContext(), addActivity.class);
         startActivityForResult(intent, 1);
         return;
     }
     @Override
-    protected void onActivityResult(int requestCode, int resultCode, Intent data)
+    public void onActivityResult(int requestCode, int resultCode, Intent data)
     {
         super.onActivityResult(requestCode, resultCode, data);
-        if(resultCode == RESULT_OK)
+        Log.d("gimun","Fragment's onActivityResult called");
+        if(resultCode == Activity.RESULT_OK)
         {
             if(requestCode == 1)
             {
@@ -290,9 +273,9 @@ public class ContactsFragment extends Fragment {
                 Adapter.notifyDataSetChanged();
             }
         }
-        else if(resultCode == RESULT_CANCELED)
+        else if(resultCode == Activity.RESULT_CANCELED)
         {
-            Toast.makeText(getApplicationContext(), "Input Canceled!", Toast.LENGTH_SHORT);
+            Toast.makeText(getContext(), "Input Canceled!", Toast.LENGTH_SHORT);
         }
     }
     class Person{
@@ -321,7 +304,7 @@ public class ContactsFragment extends Fragment {
         public View getView(int position, View convertView, ViewGroup parent) {
             View v = convertView;
             if (v == null) {
-                LayoutInflater vi = (LayoutInflater) getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+                LayoutInflater vi = (LayoutInflater) getContext().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
                 v = vi.inflate(R.layout.my_item_view, null);
             }
             Person p = items.get(position);
@@ -347,7 +330,29 @@ public class ContactsFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_contacts, container, false);
+        View v=inflater.inflate(R.layout.fragment_contacts, container, false);
+
+        vibrator = (Vibrator) getContext().getSystemService(Context.VIBRATOR_SERVICE);
+        jsonPath = getContext().getFilesDir().getAbsolutePath() + "/Roche";
+        contactList = jsonStringToList(loadJsonData());
+
+        Adapter = new PersonAdapter(
+                getContext(), R.layout.my_item_view, contactList
+        );
+        ListView list = (ListView)v.findViewById(R.id.listView);
+        list.setAdapter(Adapter);
+
+        ImageButton but = (ImageButton)v.findViewById(R.id.button);
+        but.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                //Intent intent = new Intent(MainActivity.this, NewMessageActivity.class);
+                // startActivity(intent);
+                addListContact();
+            }
+        });
+
+        return v;
     }
 
     // TODO: Rename method, update argument and hook method into UI event

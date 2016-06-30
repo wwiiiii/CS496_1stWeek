@@ -13,7 +13,7 @@
     <ImageButton
         android:layout_width="62dp"
         android:layout_height="wrap_content"
-        android:src = "@drawable/plus_white"
+        android:src = "@drawable/plus"
         android:id="@+id/button"
         android:layout_gravity="right|bottom"
         android:scaleType="fitCenter"

@@ -57,7 +57,7 @@
         android:adjustViewBounds="true"
         android:scaleType="fitCenter"
         android:background="@android:color/transparent"
-        android:onClick="buttonPushed"
+        android:onClick="callButtonPushed"
         android:clickable="false"
         android:layout_marginTop="20dp"
         android:layout_marginBottom="20dp"

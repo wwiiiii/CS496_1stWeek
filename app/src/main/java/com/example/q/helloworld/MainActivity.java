@@ -1,8 +1,11 @@
 package com.example.q.helloworld;
 
+import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTabHost;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
+import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.TabHost;
@@ -19,6 +22,7 @@ public class MainActivity extends AppCompatActivity {
     public String[] contacts={"Lee Seungwoo",
                                 "Jung Taeyoung",
                                 "Gimun"};
+    ContactsFragment mContactsFragment;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -27,11 +31,26 @@ public class MainActivity extends AppCompatActivity {
         FragmentTabHost tabHost=(FragmentTabHost)findViewById(R.id.tabHost);
         tabHost.setup(this,getSupportFragmentManager(),R.id.realtabcontent);
 
-        tabHost.addTab(tabHost.newTabSpec("contacts").setIndicator("CONTACTS!!"),ContactsFragment.class,null);
+        tabHost.addTab(tabHost.newTabSpec(ContactsFragment.class.getSimpleName()).setIndicator("CONTACTS!!"),ContactsFragment.class,null);
+//        mContactsFragment=(ContactsFragment)getSupportFragmentManager().findFragmentByTag(ContactsFragment.class.getSimpleName());
+//        Log.d("frag","mContactsFragment" + mContactsFragment.toString());
         tabHost.addTab(tabHost.newTabSpec("gallery").setIndicator("GALLERY!!"),GalleryFragment.class,null);
         tabHost.addTab(tabHost.newTabSpec("sphere").setIndicator("SPHERE!!"),SphereFragment.class,null);
 
         for(int i=0;i<tabHost.getTabWidget().getChildCount();i++)
             tabHost.getTabWidget().getChildAt(i).getLayoutParams().height=80;
+    }
+    @Override
+    public void onAttachFragment(Fragment frag) {
+//        Log.d("frag","frag attached");
+        super.onAttachFragment(frag);
+        if(frag.getClass()==ContactsFragment.class) {
+//            Log.d("frag","mContactsFragment registered");
+            mContactsFragment=(ContactsFragment)frag;
+        }
+    }
+
+    public void callButtonPushed(View view) {
+        mContactsFragment.buttonPushed(view);
     }
 }
