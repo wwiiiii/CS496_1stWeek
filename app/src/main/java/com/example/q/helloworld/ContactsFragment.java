@@ -478,6 +478,7 @@ public class ContactsFragment extends Fragment {
     };
     // TODO: Rename method, update argument and hook method into UI event
     public void onButtonPressed(Uri uri) {
+        Toast.makeText(getContext(), "onButtonPressed for Tab A", Toast.LENGTH_LONG);
 //        if (mListener != null) {
 //            mListener.onFragmentInteraction(uri);
 //        }

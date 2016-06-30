@@ -6,6 +6,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
 import android.view.Window;
+import android.widget.Button;
 import android.widget.TextView;
 
 public class addActivity extends Activity {
@@ -16,6 +17,25 @@ public class addActivity extends Activity {
         requestWindowFeature(Window.FEATURE_NO_TITLE);
         setContentView(R.layout.activity_add);
 
+        Button but = (Button) findViewById(R.id.confirm);
+        but.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                //Intent intent = new Intent(MainActivity.this, NewMessageActivity.class);
+                // startActivity(intent);
+                onConfirm(view);
+            }
+        });
+
+        Button but1 = (Button) findViewById(R.id.cancel);
+        but1.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                //Intent intent = new Intent(MainActivity.this, NewMessageActivity.class);
+                // startActivity(intent);
+                onCancel(view);
+            }
+        });
 
     }
 
