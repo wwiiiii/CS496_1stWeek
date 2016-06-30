@@ -18,6 +18,7 @@ import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.GridLayout;
 import android.widget.GridView;
+import android.widget.LinearLayout;
 import android.widget.ListAdapter;
 import android.widget.ListView;
 import android.widget.SimpleAdapter;
@@ -230,7 +231,7 @@ public class MainActivity extends AppCompatActivity {
             JSONObject jsonPhone = new JSONObject();
             jsonPerson.put("name",newbie.name);
             jsonPerson.put("email",newbie.email);
-            jsonPhone.put("mobile","01012344321");
+            jsonPhone.put("mobile",newbie.mobile);
             jsonPhone.put("home","01012344321");
             jsonPerson.put("phone",jsonPhone);
             arr.put(jsonPerson);
@@ -288,7 +289,7 @@ public class MainActivity extends AppCompatActivity {
     public void buttonPushed(View view)
     {
         vibrator.vibrate(1000);
-        GridLayout parent = (GridLayout)view.getParent();
+        LinearLayout parent = (LinearLayout) (((LinearLayout)view.getParent()).getChildAt(0));
         TextView mobile = (TextView)parent.getChildAt(2);
         String num = mobile.getText().toString();
         Toast.makeText(getApplicationContext(), num, Toast.LENGTH_SHORT).show();
