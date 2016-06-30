@@ -18,7 +18,6 @@ import android.widget.GridView;
 import android.widget.Toast;
 import android.widget.ViewSwitcher;
 
-
 ///**
 // * A simple {@link Fragment} subclass.
 // * Activities that contain this fragment must implement the
@@ -135,7 +134,6 @@ public class GalleryFragment extends Fragment {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_gallery, container, false);
         viewSwitcher = (ViewSwitcher)view.findViewById(R.id.viewSwitcher);
-
         Animation inAnimation = AnimationUtils.loadAnimation(view.getContext(), android.R.anim.slide_in_left); inAnimation.setDuration(500);
         Animation outAnimation = AnimationUtils.loadAnimation(view.getContext(), android.R.anim.slide_out_right); outAnimation.setDuration(500);
         viewSwitcher.setOutAnimation(outAnimation);
