@@ -1,11 +1,16 @@
 package com.example.q.helloworld;
-
-import android.content.Context;
+import android.content.res.Resources;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.GridView;
 import android.widget.ImageView;
+import android.content.Context;
+
+import java.util.ArrayList;
+
 
 /**
  * Created by q on 2016-06-28.
@@ -13,11 +18,16 @@ import android.widget.ImageView;
 
 public class ImageAdapter extends BaseAdapter {
     private MainActivity mContext;
+    private ArrayList<Bitmap> mResized;
 
     public ImageAdapter(MainActivity c) {
         mContext = c;
+        mResized = new ArrayList<>();
+        for (int i = 0; i < this.getCount(); i++) {
+            Bitmap bitmap = BitmapFactory.decodeResource(mContext.getResources(), mContext.mThumbIds[i]);
+            mResized.add(bitmap.createScaledBitmap(bitmap, 500, 500, true));
+        }
     }
-
     public int getCount() {
         return mContext.mThumbIds.length;
     }
@@ -40,7 +50,7 @@ public class ImageAdapter extends BaseAdapter {
         } else {
             imageView = (ImageView) convertView;
         }
-        imageView.setImageResource(mContext.mThumbIds[position]);
+        imageView.setImageBitmap(mResized.get(position));
         return imageView;
     }
 }
