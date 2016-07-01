@@ -430,7 +430,7 @@ public class ContactsFragment extends Fragment {
     {
         if(pos == contactList.size() -1)
         {
-            Toast.makeText(getContext(), "It's dummy!", Toast.LENGTH_SHORT);
+            Toast.makeText(getContext(), "It's dummy!", Toast.LENGTH_SHORT).show();
             return;
         }
         contactList.remove(pos);
