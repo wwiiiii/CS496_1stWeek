@@ -428,6 +428,11 @@ public class ContactsFragment extends Fragment {
 
     public void removeContact(int pos)
     {
+        if(pos == contactList.size() -1)
+        {
+            Toast.makeText(getContext(), "It's dummy!", Toast.LENGTH_SHORT);
+            return;
+        }
         contactList.remove(pos);
         Adapter.notifyDataSetChanged();
         try {
